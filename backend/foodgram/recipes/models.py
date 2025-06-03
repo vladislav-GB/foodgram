@@ -9,7 +9,7 @@ class Ingredient(models.Model):
         max_length=200,
         help_text='Обязательно, не более 200 символов',
     )
-    measurment = models.CharField(
+    measurement = models.CharField(
         'Единица измерения',
         max_length=200,
         help_text='Обязательно, укажите единицу измерения',
@@ -20,8 +20,8 @@ class Ingredient(models.Model):
         verbose_name_plural = 'ингредиенты'
         constraints = [
             models.UniqueConstraint(
-                fields=('name', 'measurment'),
-                name='unique_name_measurment'
+                fields=('name', 'measurement'),
+                name='unique_name_measurement'
             )
         ]
 
@@ -81,8 +81,8 @@ class RecipeIngredientsRelated(models.Model):
         verbose_name='ингредиент'
     )
     count = models.IntegerField(
-        validators=(MaxValueValidator(1), MinValueValidator(1000)),
-    )
+    validators=(MinValueValidator(1), MaxValueValidator(1000)),
+)
 
     class Meta:
         verbose_name = 'связь рецептов и ингридиентов'
