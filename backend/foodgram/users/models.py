@@ -8,7 +8,7 @@ class User(AbstractUser):
         'Имя пользователя',
         max_length=200,
         unique=True,
-        help_text='обязательное, не более 200 символов',
+        help_text='Обязательное, не более 200 символов',
         validators=[UnicodeUsernameValidator()],
         error_messages={'unique': 'Пользователь с таким именем уже существует.'}
     )
@@ -16,22 +16,17 @@ class User(AbstractUser):
         'Почта',
         max_length=200,
         unique=True,
-        help_text='обязательное, не более 200 символов',
+        help_text='Обязательное, не более 200 символов',
     )
     first_name = models.CharField(
         'Имя',
         max_length=200,
-        help_text='обязательное, не более 200 символов',
+        help_text='Обязательное, не более 200 символов',
     )
     last_name = models.CharField(
         'Фамилия',
         max_length=200,
-        help_text='обязательное, не более 200 символов',
-    )
-    password = models.CharField(
-        'Пароль',
-        max_length=20,
-        help_text='обязательное, от 8 до 20 символов',
+        help_text='Обязательное, не более 200 символов',
     )
     avatar = models.ImageField(
         verbose_name='Аватар',
@@ -63,7 +58,7 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ('username', 'first_name', 'last_name')
 
     class Meta:
-        verbose_name = 'пользователь'
+        verbose_name = 'Пользователь'
         ordering = ('username',)
         db_table = 'users_user'
 

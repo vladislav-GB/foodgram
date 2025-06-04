@@ -13,8 +13,8 @@ class RecipeIngredientsRelatedInline(admin.TabularInline):
 
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'author', 'time_cooking')
-    list_filter = ('author', 'time_cooking')
+    list_display = ('name', 'author', 'cooking_time')
+    list_filter = ('author', 'cooking_time')
     search_fields = ('name', 'author__username')
     inlines = [RecipeIngredientsRelatedInline]
     readonly_fields = ('favorites_count',)

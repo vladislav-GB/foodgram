@@ -16,8 +16,8 @@ class Ingredient(models.Model):
     )
 
     class Meta:
-        verbose_name = 'ингредиент'
-        verbose_name_plural = 'ингредиенты'
+        verbose_name = 'Ингредиент'
+        verbose_name_plural = 'Ингредиенты'
         constraints = [
             models.UniqueConstraint(
                 fields=('name', 'measurement'),
@@ -47,7 +47,7 @@ class Recipe(models.Model):
         verbose_name='',
         help_text='Обязательно, укажите ингредиенты',
     )
-    time_cooking = models.IntegerField(
+    cooking_time = models.IntegerField(
         'Время приготовления',
         help_text='Обязательно, укажите время в минутах',
         validators=(MaxValueValidator(180), MinValueValidator(15)),
@@ -60,8 +60,9 @@ class Recipe(models.Model):
     )
 
     class Meta:
-        verbose_name = 'рецепт'
-        verbose_name_plural = 'рецепты'
+        verbose_name = 'Рецепт'
+        verbose_name_plural = 'Рецепты'
+        ordering = ['-id']  # сортируем по убыванию id, чтобы пагинация была предсказуемой
 
     def __str__(self):
         return self.name
@@ -78,15 +79,15 @@ class RecipeIngredientsRelated(models.Model):
         Ingredient,
         on_delete=models.CASCADE,
         related_name='recipe_ingredints',
-        verbose_name='ингредиент'
+        verbose_name='Ингредиент'
     )
     count = models.IntegerField(
     validators=(MinValueValidator(1), MaxValueValidator(1000)),
 )
 
     class Meta:
-        verbose_name = 'связь рецептов и ингридиентов'
-        verbose_name_plural = 'связи рецептов и ингридиентов'
+        verbose_name = 'Связь рецептов и ингридиентов'
+        verbose_name_plural = 'Связи рецептов и ингридиентов'
         constraints = [
             models.UniqueConstraint(
                 fields=('recipe', 'ingredients'),
@@ -100,13 +101,13 @@ class AbstractUserRecipeModel(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name='user_recipe',
-        verbose_name='пользователь',
+        verbose_name='Пользователь',
     )
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
         related_name='user_recipe',
-        verbose_name='рецепт'
+        verbose_name='Рецепт'
     )
 
     class Meta:
@@ -116,8 +117,8 @@ class AbstractUserRecipeModel(models.Model):
 class ShoppingList(AbstractUserRecipeModel):
 
     class Meta:
-        verbose_name = 'покупки'
-        verbose_name_plural = 'покупки'
+        verbose_name = 'Покупки'
+        verbose_name_plural = 'Покупки'
         constraints = [
             models.UniqueConstraint(
                 fields=('user', 'recipe'),
@@ -131,18 +132,18 @@ class Favourite(AbstractUserRecipeModel):
         User,
         on_delete=models.CASCADE,
         related_name='favourites',
-        verbose_name='пользователь',
+        verbose_name='Пользователь',
     )
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
         related_name='favourites',
-        verbose_name='рецепт'
+        verbose_name='Рецепт'
     )
 
     class Meta:
-        verbose_name = 'избранное'
-        verbose_name_plural = 'избранное'
+        verbose_name = 'Избранное'
+        verbose_name_plural = 'Избранное'
         constraints = [
             models.UniqueConstraint(
                 fields=('user', 'recipe'),
