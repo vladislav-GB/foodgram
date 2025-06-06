@@ -12,7 +12,7 @@ class Command(BaseCommand):
             ingredients = [
                 Ingredient(
                     name=row[0],
-                    measurment=row[1],
+                    measurement=row[1],
                 )
                 for row in reader
             ]

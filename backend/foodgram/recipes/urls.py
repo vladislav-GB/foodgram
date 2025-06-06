@@ -1,8 +1,7 @@
-from django.urls import path
-from . import views
+from rest_framework.routers import DefaultRouter
+from .views import RecipeViewSet
 
-app_name = 'recipes'
+router = DefaultRouter()
+router.register(r'recipes', RecipeViewSet)
 
-urlpatterns = [
-    path('', views.recipe_list, name='recipe-list'),
-]
+urlpatterns = router.urls

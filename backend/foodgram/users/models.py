@@ -67,24 +67,24 @@ class User(AbstractUser):
 
 class Subscription(models.Model):
     'Модель для подписок',
-    subscription = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='subscription',
-        verbose_name='Пользователь',
+    user = models.ForeignKey(
+    User,
+    on_delete=models.CASCADE,
+    related_name='subscriptions',  # все, на кого подписан user
+    verbose_name='Подписчик',
     )
-    following = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='following',
-        verbose_name='Автор',
+    author = models.ForeignKey(
+    User,
+    on_delete=models.CASCADE,
+    related_name='subscribers',  # все, кто подписан на этого автора
+    verbose_name='Автор',
     )
 
     class Meta:
         verbose_name = 'Подписка'
         constraints = [
             models.UniqueConstraint(
-                fields=('subscription', 'following'),
+                fields=('user', 'author'),
                 name='unique_name_following'
             )
         ]
