@@ -1,14 +1,17 @@
 from rest_framework import serializers
 from django.core.files.base import ContentFile
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth import get_user_model
+from users.models import Subscription
 import base64
 import uuid
 
-from users.models import User, Subscription
 from recipes.models import (
     Recipe, RecipeIngredientsRelated, Ingredient,
     ShoppingList, Favourite
 )
 
+User = get_user_model()
 
 class Base64ImageField(serializers.ImageField):
     def to_internal_value(self, data):
@@ -24,23 +27,29 @@ class Base64ImageField(serializers.ImageField):
 
 class CustomUserSerializer(serializers.ModelSerializer):
     is_subscribed = serializers.SerializerMethodField()
+    password = serializers.CharField(write_only=True, required=True)
 
     class Meta:
         model = User
         fields = (
             'email', 'id', 'username',
             'first_name', 'last_name',
+            'password',
             'is_subscribed'
         )
 
     def get_is_subscribed(self, obj):
         request = self.context.get('request')
         if request and request.user.is_authenticated:
-            return Subscription.objects.filter(
-                user=request.user,
-                author=obj
-            ).exists()
+            return Subscription.objects.filter(user=request.user, author=obj).exists()
         return False
+
+    def create(self, validated_data):
+        password = validated_data.pop('password')
+        user = User(**validated_data)
+        user.password = make_password(password)
+        user.save()
+        return user
 
 
 class IngredientSerializer(serializers.ModelSerializer):

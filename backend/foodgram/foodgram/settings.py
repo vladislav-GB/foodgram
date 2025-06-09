@@ -45,11 +45,13 @@ DJOSER = {
     'LOGIN_FIELD': 'email',
     'HIDE_USERS': False,
     'SERIALIZERS': {
-        'user': 'api.serializers.CustomUserSerializer',  
+        'user_create': 'api.serializers.CustomUserSerializer',  # <-- добавь эту строку
+        'user': 'api.serializers.CustomUserSerializer',
     },
     'PERMISSIONS': {
         'user': ['rest_framework.permissions.IsAuthenticated'],
         'user_list': ['rest_framework.permissions.AllowAny'],
+        'user_create': ['rest_framework.permissions.AllowAny'],  # чтобы регистрация была доступна всем
     }
 }
 
@@ -114,6 +116,7 @@ DATABASES = {
     }
 }
 
+DEBUG = True
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
